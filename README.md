@@ -22,16 +22,17 @@ Manually creating IAM users one at a time in the AWS Console doesn't scale — f
 
 **Result:** 26 users → 58 AWS resources provisioned automatically, in seconds, from one CSV file.
 
----
+
 
 ## 🏗️ Architecture
 
+```
+<img width="2720" height="2480" alt="iam_bulk_user_provisioning_architecture" src="https://github.com/user-attachments/assets/3879edf1-4d26-498e-b934-888e6a73c145" />
+```
 
-                   <img width="2720" height="2480" alt="iam_bulk_user_provisioning_architecture" src="https://github.com/user-attachments/assets/3879edf1-4d26-498e-b934-888e6a73c145" />
 
 
-
-
+---
 **Design principle at the center of this project:** tags aren't just metadata here — they're the *input* to a downstream decision (group membership). `DisplayName`, `Department`, and `JobTitle` get written onto each `aws_iam_user` resource specifically so that later `for`/`if` expressions can read them back and decide group placement. This is a pattern worth recognizing: **infrastructure state itself becomes the source of truth that drives further infrastructure logic**, instead of hardcoding group membership by hand.
 
 ---
