@@ -27,47 +27,8 @@ Manually creating IAM users one at a time in the AWS Console doesn't scale — f
 ## 🏗️ Architecture
 
 ```
-                    ┌─────────────────┐
-                    │   users.csv      │
-                    │ first_name,      │
-                    │ last_name,       │
-                    │ department,      │
-                    │ job_title        │
-                    └────────┬─────────┘
-                             │  csvdecode()
-                             ▼
-                    ┌─────────────────┐
-                    │  local.users     │
-                    │ (list of maps)   │
-                    └────────┬─────────┘
-                             │  for_each
-                             ▼
-              ┌──────────────────────────────┐
-              │      aws_iam_user (x26)       │
-              │  name = first_initial+lastname│
-              │  tags = {Department,JobTitle} │
-              └───────┬───────────────┬────────┘
-                       │               │
-                       ▼               │
-        ┌───────────────────────┐      │
-        │ aws_iam_user_login_   │      │
-        │ profile (x26)         │      │
-        │ console access +      │      │
-        │ forced password reset │      │
-        └───────────────────────┘      │
-                                        │  for/if filter on tags
-                     ┌──────────────────┼──────────────────┐
-                     ▼                  ▼                  ▼
-          ┌────────────────┐  ┌────────────────┐  ┌────────────────┐
-          │  Education      │  │  Engineers      │  │  Managers       │
-          │  IAM Group      │  │  IAM Group      │  │  IAM Group      │
-          │  (Department == │  │  (Department == │  │  (JobTitle       │
-          │   "Education")  │  │   "Engineering")│  │   matches        │
-          │                 │  │                 │  │   Manager|CEO)   │
-          └────────────────┘  └────────────────┘  └────────────────┘
+                   <img width="1244" height="1134" alt="image" src="https://github.com/user-attachments/assets/e419dd01-0d8e-463a-8115-a418b8c281f4" />
 
-        State stored remotely in an S3 backend for team collaboration
-        and safe concurrent access.
 ```
 
 **Design principle at the center of this project:** tags aren't just metadata here — they're the *input* to a downstream decision (group membership). `DisplayName`, `Department`, and `JobTitle` get written onto each `aws_iam_user` resource specifically so that later `for`/`if` expressions can read them back and decide group placement. This is a pattern worth recognizing: **infrastructure state itself becomes the source of truth that drives further infrastructure logic**, instead of hardcoding group membership by hand.
