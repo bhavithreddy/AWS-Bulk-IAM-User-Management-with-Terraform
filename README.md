@@ -26,9 +26,7 @@ Manually creating IAM users one at a time in the AWS Console doesn't scale — f
 
 ## 🏗️ Architecture
 
-```
 <img width="2720" height="2480" alt="iam_bulk_user_provisioning_architecture" src="https://github.com/user-attachments/assets/3879edf1-4d26-498e-b934-888e6a73c145" />
-```
 
 
 
