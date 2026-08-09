@@ -90,7 +90,6 @@ Manually creating IAM users one at a time in the AWS Console doesn't scale — f
 
 ```
 iam-bulk-user-management/
-├── backend.tf       # S3 remote backend configuration for Terraform state
 ├── provider.tf      # AWS provider configuration
 ├── versions.tf      # Terraform + provider version constraints
 ├── main.tf          # locals (csvdecode), aws_iam_user, aws_iam_user_login_profile
@@ -99,6 +98,9 @@ iam-bulk-user-management/
 ├── users.csv         # Source data — first_name, last_name, department, job_title
 └── README.md
 ```
+<img width="900" height="736" alt="Screenshot 2026-08-09 123609" src="https://github.com/user-attachments/assets/c1b6a47e-2027-44cf-8c30-ace4ef0f2cf5" />
+<img width="1030" height="748" alt="Screenshot 2026-08-09 123519" src="https://github.com/user-attachments/assets/21b7fe97-142e-46e6-aea1-6de66d7f9431" />
+<img width="742" height="557" alt="Screenshot 2026-08-09 123449" src="https://github.com/user-attachments/assets/4dc1b66c-d782-4186-b5e3-242744b0c355" />
 
 ---
 
